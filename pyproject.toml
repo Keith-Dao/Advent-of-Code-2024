@@ -15,3 +15,6 @@ allow-direct-references = true
 [tool.isort]
 profile = "google"
 force_single_line = false
+
+[project.scripts]
+aoc_2024_solver = "advent_of_code_2024.cli:main"

@@ -12,10 +12,10 @@ class Solver(BaseSolver):
     Day 2 solver.
     """
 
-    def part_1(self, file: Path) -> int:
+    def part_1(self, filepath: Path) -> int:
         return 1
 
-    def part_2(self, file: Path) -> int:
+    def part_2(self, filepath: Path) -> int:
         return 1
 
 

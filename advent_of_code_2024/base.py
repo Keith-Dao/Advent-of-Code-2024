@@ -11,24 +11,24 @@ class Solver(ABC):
     """Base solver."""
 
     @abstractmethod
-    def part_1(self, file: Path) -> int:
+    def part_1(self, filepath: Path) -> int:
         """
         Solves part 1.
 
         Args:
-            file: The path to the data file.
+            filepath: The path to the data file.
 
         Returns:
             The solution to part 1.
         """
 
     @abstractmethod
-    def part_2(self, file: Path) -> int:
+    def part_2(self, filepath: Path) -> int:
         """
         Solves part 2.
 
         Args:
-            file: The path to the data file.
+            filepath: The path to the data file.
 
         Returns:
             The solution to part 2.

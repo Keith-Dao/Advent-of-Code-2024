@@ -41,8 +41,3 @@ class Solver(BaseSolver):
                     result += int(x) * int(y)
 
         return result
-
-
-if __name__ == "__main__":
-    solver = Solver()
-    solver.solve("input.txt")

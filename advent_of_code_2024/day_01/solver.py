@@ -36,8 +36,3 @@ class Solver(BaseSolver):
                 counter[next(line_nums)] += 1
 
         return sum(x * counter[x] for x in nums)
-
-
-if __name__ == "__main__":
-    solver = Solver()
-    solver.solve("input.txt")

@@ -17,8 +17,3 @@ class Solver(BaseSolver):
 
     def part_2(self, filepath: Path) -> int:
         return 1
-
-
-if __name__ == "__main__":
-    solver = Solver()
-    solver.solve("input.txt")

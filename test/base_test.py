@@ -15,35 +15,45 @@ class BaseTests:
 
     solver: Solver
     example_input: str
+    part_1_input: str
+    part_2_input: str
     part_1_solution: int
     part_2_solution: int
 
     # === Fixtures ===
     @pytest.fixture
-    def input_file(self, tmp_path: pathlib.Path) -> pathlib.Path:
+    def part(
+        self,
+        tmp_path: pathlib.Path,
+        request: pytest.FixtureRequest,
+    ) -> tuple[int, pathlib.Path, int]:
         """
-        Create a temporary file with the example input.
+        Creates a temporary input file the selected example input
+        and gathers the part to test and the expected answer.
 
         Args:
             tmp_path: The temporary path to store the input file.
 
         Returns:
-            Path to the temporary input file.
+            The part to be tested, path to the temporary input file
+            and the solution to the part.
         """
+        part_num = request.param
         input_file = tmp_path / "input.txt"
         with open(input_file, "w", encoding=sys.getdefaultencoding()) as file:
-            file.write(self.example_input)
-        return input_file
+            file.write(
+                getattr(self, f"part_{part_num}_input")
+                if hasattr(self, f"part_{part_num}_input")
+                # Fallback to the general example input
+                else self.example_input
+            )
+        return part_num, input_file, getattr(self, f"part_{part_num}_solution")
 
     # === Tests ===
-    def test_part_1(self, input_file):
+    @pytest.mark.parametrize("part", [1, 2], indirect=True)
+    def test_part(self, part):
         """
-        Test part 1 solver.
+        Tests a part of the solver.
         """
-        assert self.solver.part_1(input_file) == self.part_1_solution
-
-    def test_part_2(self, input_file):
-        """
-        Test part 2 solver.
-        """
-        assert self.solver.part_2(input_file) == self.part_2_solution
+        part_num, input_file, solution = part
+        assert getattr(self.solver, f"part_{part_num}")(input_file) == solution

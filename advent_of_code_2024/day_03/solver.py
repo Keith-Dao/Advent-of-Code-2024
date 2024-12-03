@@ -17,9 +17,9 @@ class Solver(BaseSolver):
     def part_1(self, filepath: Path) -> int:
         with open(filepath, "r", encoding=sys.getdefaultencoding()) as file:
             return sum(
-                int(x) * int(y)
+                int(match[1]) * int(match[2])
                 for line in file
-                for x, y in re.findall(r"mul\((\d+),(\d+)\)", line)
+                for match in re.finditer(r"mul\((\d+),(\d+)\)", line)
             )
 
     def part_2(self, filepath: Path) -> int:
@@ -27,17 +27,17 @@ class Solver(BaseSolver):
         enabled = True
         with open(filepath, "r", encoding=sys.getdefaultencoding()) as file:
             for line in file:
-                for action, x, y in re.findall(
-                    r"(mul\((\d+),(\d+)\)|do\(\)|don't\(\))", line
+                for match in re.finditer(
+                    r"mul\((\d+),(\d+)\)|do\(\)|don't\(\)", line
                 ):
-                    if action == "don't()":
+                    if match.group(0) == "don't()":
                         enabled = False
-                    elif action == "do()":
+                    elif match.group(0) == "do()":
                         enabled = True
 
-                    if not action.startswith("mul") or not enabled:
+                    if not match.group(0).startswith("mul") or not enabled:
                         continue
 
-                    result += int(x) * int(y)
+                    result += int(match.group(1)) * int(match.group(2))
 
         return result

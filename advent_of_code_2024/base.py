@@ -44,8 +44,10 @@ class Solver(ABC):
         file = Path(file)
         day_num = (
             solver_module.__package__[-2:].lstrip("0")
-            if (solver_module := inspect.getmodule(self))
-            and solver_module.__package__
+            if (
+                (solver_module := inspect.getmodule(self))
+                and solver_module.__package__
+            )
             else "??"
         )
         print(f"Day {day_num}")

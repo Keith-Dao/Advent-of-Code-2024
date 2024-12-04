@@ -11,6 +11,15 @@ class TestDay4(BaseTests):
     """Tests the day 4 solver."""
 
     solver = Solver()
-    example_input = """###"""
-    part_1_solution = -1
-    part_2_solution = -1
+    example_input = """MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX"""
+    part_1_solution = 18
+    part_2_solution = 9

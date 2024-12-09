@@ -96,3 +96,108 @@ class Solver(BaseSolver):
             x * (start * length + length * (length - 1) // 2)
             for x, (start, length) in enumerate(files)
         )
+
+    def _alternate_part_2(self, filepath: Path) -> int:
+        """
+        Solves part two using a segment tree. Slower than other part two solver.
+
+        Args:
+            filepath: Path to the input file.
+
+        Returns:
+            The solution to part two.
+        """
+        with open(filepath, "r", encoding=sys.getdefaultencoding()) as file:
+            line = file.read().strip()
+
+        n = len(line)
+        tree = [(-1, -1) for _ in range(4 * n)]
+
+        def update(
+            index: int,
+            length: int,
+            i: int = 0,
+            left: int = 0,
+            right: int = n - 1,
+        ):
+            """
+            Update the segment tree with the new length at the block index.
+
+            Args:
+                index: The block's index.
+                length: The new length of the block.
+                i: The index of the tree.
+                left: The left bound of the array.
+                right: The right bound of the array.
+            """
+            if left == right:
+                tree[i] = (length, index)
+                return
+
+            mid = (left + right) // 2
+            if index <= mid:
+                update(index, length, i * 2 + 1, left, mid)
+            else:
+                update(index, length, i * 2 + 2, mid + 1, right)
+
+            tree[i] = max(tree[i * 2 + 1], tree[i * 2 + 2])
+
+        def query(
+            length: int, i: int = 0, left: int = 0, right: int = n - 1
+        ) -> tuple[int, int]:
+            """
+            Query the segment tree for the lowest index with at least length
+            available.
+
+            Args:
+                length: The minimum free block length.
+                i: The index of the tree.
+                left: The left bound of the array.
+                right: The right bound of the array.
+
+            Returns:
+                The free block length and index respectively.
+            """
+            if left == right:
+                if tree[i][0] >= length:
+                    return tree[i]
+                return (-1, -1)
+
+            mid = (left + right) // 2
+            if tree[i * 2 + 1][0] >= length:
+                return query(length, i * 2 + 1, left, mid)
+
+            if tree[i * 2 + 2][0] >= length:
+                return query(length, i * 2 + 2, mid + 1, right)
+
+            return (-1, -1)
+
+        blocks = []
+        current = 0
+        for i, c in enumerate(line):
+            x = int(c)
+            if i % 2 == 1:
+                update(i, x)
+
+            blocks.append([current, x])
+            current += x
+
+        for i in reversed(range(len(blocks))):
+            if i % 2 == 1:
+                continue
+
+            file = _, file_len = blocks[i]
+            j = query(file_len)[1]
+            if j == -1 or j > i:
+                continue
+
+            file[0] = blocks[j][0]
+            blocks[j][0] += file_len
+            blocks[j][1] -= file_len
+            update(j, blocks[j][1])
+
+        return sum(
+            x // 2 * (start * length + length * (length - 1) // 2)
+            for x, (start, length) in enumerate(blocks)
+            if x % 2 == 0
+        )

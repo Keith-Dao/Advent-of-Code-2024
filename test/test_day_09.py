@@ -11,6 +11,4 @@ class TestDay9(BaseTests):
     """Tests the day 9 solver."""
 
     solver = Solver()
-    example_input = """2333133121414131402"""
-    part_1_solution = 1928
-    part_2_solution = 2858
+    cases = [("""2333133121414131402""", 1928, 2858)]

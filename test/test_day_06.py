@@ -11,7 +11,9 @@ class TestDay6(BaseTests):
     """Tests the day 6 solver."""
 
     solver = Solver()
-    example_input = """....#.....
+    cases = [
+        (
+            """....#.....
 .........#
 ..........
 ..#.......
@@ -20,6 +22,8 @@ class TestDay6(BaseTests):
 .#..^.....
 ........#.
 #.........
-......#..."""
-    part_1_solution = 41
-    part_2_solution = 6
+......#...""",
+            41,
+            6,
+        )
+    ]

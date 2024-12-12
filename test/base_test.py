@@ -14,46 +14,59 @@ class BaseTests:
     """Base tests"""
 
     solver: Solver
-    example_input: str
-    part_1_input: str
-    part_2_input: str
-    part_1_solution: int
-    part_2_solution: int
+    cases: list[tuple[str, int | None, int | None]]
+
+    # === Test cases ===
+    def pytest_generate_tests(self, metafunc: pytest.Metafunc):
+        """
+        Pytest runs this before tests are run. Tests cases are
+        generated using the case attributes.
+
+        Args:
+            metafunc: The test function.
+        """
+        test_cases = [
+            (i, (input_file, solution, part))
+            for i, (input_file, *solutions) in enumerate(self.cases)
+            for part, solution in enumerate(solutions, start=1)
+            if solution is not None
+        ]
+
+        metafunc.parametrize(
+            ["input_file", "solution", "part"],
+            [param for _, param in test_cases],
+            indirect=["input_file"],
+            ids=[
+                f"Test {test_id} - part {part}"
+                for test_id, (*_, part) in test_cases
+            ],
+        )
 
     # === Fixtures ===
     @pytest.fixture
-    def part(
+    def input_file(
         self,
         tmp_path: pathlib.Path,
         request: pytest.FixtureRequest,
-    ) -> tuple[int, pathlib.Path, int]:
+    ) -> pathlib.Path:
         """
-        Creates a temporary input file the selected example input
-        and gathers the part to test and the expected answer.
+        Creates a temporary input file with the test input.
 
         Args:
             tmp_path: The temporary path to store the input file.
 
         Returns:
-            The part to be tested, path to the temporary input file
-            and the solution to the part.
+            Path to the temporary input file.
         """
-        part_num = request.param
+        input_data = request.param
         input_file = tmp_path / "input.txt"
         with open(input_file, "w", encoding=sys.getdefaultencoding()) as file:
-            file.write(
-                getattr(self, f"part_{part_num}_input")
-                if hasattr(self, f"part_{part_num}_input")
-                # Fallback to the general example input
-                else self.example_input
-            )
-        return part_num, input_file, getattr(self, f"part_{part_num}_solution")
+            file.write(input_data)
+        return input_file
 
     # === Tests ===
-    @pytest.mark.parametrize("part", [1, 2], indirect=True)
-    def test_part(self, part):
+    def test_part(self, input_file: pathlib.Path, solution: int, part: int):
         """
         Tests a part of the solver.
         """
-        part_num, input_file, solution = part
-        assert getattr(self.solver, f"part_{part_num}")(input_file) == solution
+        assert getattr(self.solver, f"part_{part}")(input_file) == solution

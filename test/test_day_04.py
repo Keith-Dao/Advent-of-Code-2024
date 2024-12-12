@@ -11,7 +11,9 @@ class TestDay4(BaseTests):
     """Tests the day 4 solver."""
 
     solver = Solver()
-    example_input = """MMMSXXMASM
+    cases = [
+        (
+            """MMMSXXMASM
 MSAMXMSMSA
 AMXSXMAAMM
 MSAMASMSMX
@@ -20,6 +22,8 @@ XXAMMXXAMA
 SMSMSASXSS
 SAXAMASAAA
 MAMMMXMMMM
-MXMXAXMASX"""
-    part_1_solution = 18
-    part_2_solution = 9
+MXMXAXMASX""",
+            18,
+            9,
+        )
+    ]

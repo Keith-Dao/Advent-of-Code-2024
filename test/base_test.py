@@ -69,4 +69,8 @@ class BaseTests:
         """
         Tests a part of the solver.
         """
-        assert getattr(self.solver, f"part_{part}")(input_file) == solution
+        test_args = getattr(self, "test_args", {})
+        assert (
+            getattr(self.solver, f"part_{part}")(input_file, **test_args)
+            == solution
+        )

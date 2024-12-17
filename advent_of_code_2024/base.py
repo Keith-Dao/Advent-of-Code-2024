@@ -11,7 +11,7 @@ class Solver(ABC):
     """Base solver."""
 
     @abstractmethod
-    def part_1(self, filepath: Path) -> int:
+    def part_1(self, filepath: Path) -> int | str:
         """
         Solves part 1.
 
@@ -23,7 +23,7 @@ class Solver(ABC):
         """
 
     @abstractmethod
-    def part_2(self, filepath: Path) -> int:
+    def part_2(self, filepath: Path) -> int | str:
         """
         Solves part 2.
 

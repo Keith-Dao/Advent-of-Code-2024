@@ -14,7 +14,7 @@ class BaseTests:
     """Base tests"""
 
     solver: Solver
-    cases: list[tuple[str, int | None, int | None]]
+    cases: list[tuple[str, int | str | None, int | str | None]]
 
     # === Test cases ===
     def pytest_generate_tests(self, metafunc: pytest.Metafunc):

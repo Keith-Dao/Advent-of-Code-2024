@@ -4,6 +4,7 @@ Base test.
 
 import pathlib
 import sys
+from typing import Any
 
 import pytest
 
@@ -15,6 +16,8 @@ class BaseTests:
 
     solver: Solver
     cases: list[tuple[str, int | str | None, int | str | None]]
+    test_args: dict[str, Any] | None
+    ignore_args: tuple[list[str], list[str]]
 
     # === Test cases ===
     def pytest_generate_tests(self, metafunc: pytest.Metafunc):
@@ -70,6 +73,10 @@ class BaseTests:
         Tests a part of the solver.
         """
         test_args = getattr(self, "test_args", {})
+        ignore_args = getattr(self, "ignore_args", ([], []))[part - 1]
+        for ignore_arg in ignore_args:
+            test_args.pop(ignore_arg)
+
         assert (
             getattr(self.solver, f"part_{part}")(input_file, **test_args)
             == solution

@@ -11,4 +11,19 @@ class TestDay19(BaseTests):
     """Tests the day 19 solver."""
 
     solver = Solver()
-    cases = [("""###""", -1, -1)]
+    cases = [
+        (
+            """r, wr, b, g, bwu, rb, gb, br
+
+brwrr
+bggr
+gbbr
+rrbgbr
+ubwu
+bwurrg
+brgr
+bbrgwb""",
+            6,
+            16,
+        )
+    ]

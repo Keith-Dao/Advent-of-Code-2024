@@ -11,4 +11,14 @@ class TestDay21(BaseTests):
     """Tests the day 21 solver."""
 
     solver = Solver()
-    cases = [("""###""", -1, -1)]
+    cases = [
+        (
+            """029A
+980A
+179A
+456A
+379A""",
+            126384,
+            154115708116294,
+        )
+    ]
